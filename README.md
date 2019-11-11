@@ -2,6 +2,8 @@
 
 > or: a new thing for node.js
 
+[youtube link](https://youtu.be/hhqG8d2yCwQ)
+
 - Here's the [raw Deckset markdown](./slides.md)
 - And the [essay](./talk.md)
 - And, finally, the initial [outline](./outline.md)
