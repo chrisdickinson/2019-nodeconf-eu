@@ -1,19 +1,8 @@
-# hi, I'm chris
-
-- chrisdickinson on github
-- isntitvacant on twitter
-
-^ welcome to my secret presenter notes. hi hello everyone. My name is Chris
-Dickinson. I work with CJ at a company called Eaze, and before that I worked at
-npm for about 4 years. I accidentally turned registry.yarnpkg.com into a teapot
-in an ill-fated use of the 418 status code. Sorry.
-
----
-
 # package management
 
-^ Code you write depends on code other people write, and you need some way to
-get it, and boom, you have package management.
+^ I'm here to talk to you today about package management, in particular about hosting packages. Code you write
+depends on code other people write, and you need some way to get it, and boom,
+you've got a package registry.
  
 ---
 
@@ -21,7 +10,7 @@ get it, and boom, you have package management.
 # [fit] **wrong**
 ## with package management
 
-^ Every language ecosystem builds some form of package management. Even tooling
+^ Nearly every language ecosystem builds some form of package management. Even tooling
 ecosystems -- like docker -- build it. The wheel has been thoroughly
 reinvented.
 
@@ -30,23 +19,17 @@ reinvented.
 # :fire::package::fire:
 
 ^ However. The most at-hand way to build package managers also happens to
-have bad interactions with the way our industry is constructed and funded.
+have bad interactions with the way our industry is funded.
 
 ---
 
 ### a **brief** aside
 
-^ This talk is something of a sequel to Ceej's "Economics of Open
-Source", delivered this year at JSConf EU. My hope is that this will be a
+^ This talk is something of a sequel to Ceej's "Economics of Package Management", delivered this year at JSConf EU. My hope is that this will be a
 sequel in the vein of James Cameron films -- expanding the universe in an
 approachable way for folks who didn't see the original. You can enjoy
 Terminator 2 without getting caught up with Terminator 1, for example.
-
----
-
-> 🧙🏻‍♂️
-
-^  I might miss the mark and head down the Silmarillion path though. If I do,
+I might miss the mark and head down the Silmarillion path though. If I do,
 let me know, that's worth Tolkien about.
 
 ---
@@ -57,7 +40,7 @@ let me know, that's worth Tolkien about.
 me, everyone in this room, and lots of folks outside of it -- built the largest
 package ecosystem in the world. We've changed the common practice of our trade
 dramatically: we've changed how we build web applications, run open source
-projects, build desktop applications, even how we teach new programmers.
+projects, how we teach new programmers, and even how we define "conference badges".
 
 ---
 
@@ -137,6 +120,8 @@ account, should this power even exist?
 
 ---
 
+# why?
+
 ^ You have to look at what constraints make a package registry successful, and what the most at-hand ways to achieve those constraints are.
 
 ---
@@ -154,12 +139,12 @@ would tell me: no dice, pick another name.
 
 # tradeoffs
 
-^ More contentious: if I want to remove my code from the registry, I can't. Once
+^ Maybe more contentious: if I want to remove my code from the registry, I can't. Once
 it's there, it's there. The pressure of other people relying on my code means
 that registries are compelled to fix published code in place. If I want to run
 ads or install a bitcoin miner in my popular package, the registry is empowered
 to remove that version, or change my release lines out from under me to prevent
-that. I don't wholly own my package.
+that. I don't wholly own my package once I've published it. And that's fine!
 
 ---
 
@@ -177,7 +162,7 @@ chooses to listen. Bad tradeoffs are embedded in the good tradeoffs.
 
 ---
 
-### hot potatoes **colon slash slash**
+### https **colon slash slash**
 ## www **dot** registry **dot** biz
 
 ^ The most at-hand way to build something like this is to host package metadata
@@ -207,7 +192,7 @@ that growth keeps rising.
 
 ^ Many ecosystems use the pattern of a centralized registry. Why should we, in
 the JavaScript community, be especially concerned? As folks who saw Ceej's talk
-will remember: our registry is run by a for-profit, VC-funded private company.
+will remember: our registry is run by a for-profit, venture-capital-funded private company.
 And as a VC-funded company, it is primarily a financial instrument -- an
 investment from the folks with money, with the expectation of extracting more
 money out of the company when the time comes. When I joined npm in 2015, I thought
@@ -237,15 +222,17 @@ the rising costs of supporting the ecosystem.
 # **notable** package manager
 
 ^ GitHub launched their package registry. If there was doubt before, it's gone
-now: centralized package management is not a product in itself. It is a
+now: centralized package management is not a product in itself, especially one that focuses on a single language ecosystem. It is a
 line-item feature of a centralized product.
 
 ---
 
+# :star:
+
 ^ I started in 2015 and stayed until this year. I stayed as long as I could,
 probably longer than I should've. There are still a lot of really great people,
 who I want to cheer on from the outside. But I worry that npm no longer has a
-lever big enough to live up to their mission: take JavaScript to the stars.
+lever big enough to live up to their mission: take JavaScript to the stars. That is to say: preserve the JS commons in perpetuity.
 
 ---
 
@@ -279,8 +266,9 @@ week and a half to build.
 # 🦀
 
 ^ On the other hand, decentralized registries are hard to build, but cheap to
-scale. They're hard to build because, as you'll recall, good registry systems
-are built on enforcing trust-enhancing, friction-reducing tradeoffs for their
+scale because they spread the cost of operatorship across a larger base.
+They're hard to build because, as you'll recall, good registry systems are
+built on enforcing trust-enhancing, friction-reducing tradeoffs for their
 users, and this is easiest to build if there's a global authority. When there's
 no central authority holding the keys, these tradeoffs are harder to enforce.
 For instance: how do you keep foundational packages from being removed from a
@@ -291,8 +279,9 @@ decentralized system?
 # [fit] ENTROPIC
 ![](./01-static.png)
 
-^ In building Entropic we dissected these tradeoffs and came to the following
-conclusions.
+^ (This is our mascot, Static the Raccoon, by the way. I have stickers.) In
+building Entropic we dissected these tradeoffs and came to the following
+conclusions. 
 
 ---
 
@@ -341,6 +330,16 @@ to me?
 
 ---
 
+# public
+# key
+# crypto
+
+^ Handily, public key cryptography gives us tools to solve this problem. The
+public key can be used to verify that a sequence of data was "signed" by a
+a corresponding private key. We can use this information in order to say: "yes", this is the package data signed by the original registry."
+
+---
+
 ![fit](./06-notary.png)
 
 ^ Thus, we sign packages. The author signs the package metadata, the server
@@ -370,6 +369,31 @@ registries.
 clients, we must make them stable. Thus, the packages are stored in
 content-addressable form -- each file stored at a content hash, and the
 per-version metadata is stored as a table of those content hashes.
+
+---
+
+```
+Hash("some long sequence of characters...") -> "d00fbeeffade"
+```
+
+^ If you're not familiar with the concept: content addressable data stores
+work by using a hash function to reduce an input sequence of characters into
+a shorter sequence of characters with a given probability of collision. One
+(bad) hash function might be to take the first character of everyone's name in
+the room.
+
+---
+
+```
+Hash("some long sequence of characters...") -> "d00fbeeffade"
+```
+
+^ In a content addressable system we call the output a "content address."
+Data stored at that address must hash to the same value. This has the nice
+property that if we've already seen a piece of data, we can skip storing it.
+Further, if the data you're inserting contains content hashes, whenever a
+constituent address changes, the changes ripple out through the top-level
+document!
 
 ---
 
@@ -520,11 +544,17 @@ distributed ledgers.
 registry. This effort will only succeed if we invert the relationship between
 "size of registry ecosystem" and "cost to support the registry." This means
 there might not be a **single** Entropic codebase to fit all sizes! Ideally for
-small instances, the cost of hosting & traffic should be around 5-10 dollars a
-month. For larger instances suitable for supporting a company, 50-100 dollars
+small instances, the cost of hosting & traffic should be less than 5 dollars a
+month. For larger instances suitable for supporting a company, 50 dollars or less
 in hosting a month should be okay. You could picture small Entropics built out
 of serverless tech: lambdas or cloudflare workers. Larger, "always-on"
 instances might target Kubernetes and hosted Postgres.
+
+---
+
+# razor
+
+^ This creates a razor for focusing attention: "Does investing in this discussion change the protocol in a way that gets us closer to that hosting cost goal?" (A razor in the rhetorical sense: a rule of thumb that allows one to avoid unnecessary actions.)
 
 ---
 
@@ -567,14 +597,24 @@ trends appear in the registry.
 
 # :star:
 
-^ I joined npm back in the day because I believed in the mission: take JavaScript
-to the stars. I don't feel entirely comfortable pinning my hopes on a
-corporation, even a presently good actor. I've experienced firsthand how
+^ I joined npm back in the day because I believed in the mission: take
+JavaScript to the stars. I don't feel entirely comfortable pinning my hopes on
+a corporation, even a presently good actor. I've experienced firsthand how
 quickly a company can change. I'm here because I think this effort is our best
 shot at disseminating a power that should never have been placed in one
-company's hands alone. I believe in this community. With your help I think
-we can take JavaScript to the stars together.
+company's hands alone. We've changed so much in the last ten years of Node. I
+believe in this community. With your help I think we can take JavaScript to the
+stars together.
 
 ---
 
-- https://research.swtch.com/tlog
+QRcode (view with iOS Camera to hop to links!)
+
+- entropic-dev on github
+- @isntitvacant on twitter
+- chrisdickinson on github
+- thanks to Kat & Ceej for reviewing
+
+^ I have stickers, btw!
+
+![right](./qrcode.png)
